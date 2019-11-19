@@ -21,7 +21,7 @@ public class Main {
             };
         Obstacle[] obstacles = {
                 new Cross(1000),
-                new Wall(3)
+                new Wall(1)
         };
 
         for (Competitor c:competitors) {
