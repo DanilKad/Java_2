@@ -47,7 +47,20 @@ public class Main {
         book.findAndPrint("Игорь");
         book.findAndPrint("Кристина");
         book.findAndPrint("Данил");
+
+
+        Map<Integer, Integer> hm = new HashMap<>();
+//
+        for (int i = 0; i < 100; i++) {
+     //       int num = rand.nextInt(10);
+//            Integer currentNum = hm.get(num);
+//            hm.put(num, currentNum == null ? 1 : currentNum + 1);
+   //         hm.put(num, hm.getOrDefault(num, 0) + 1);
+        }
+//
+        System.out.println(hm);
     }
+
 }
 
 
