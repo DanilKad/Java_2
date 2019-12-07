@@ -10,6 +10,7 @@ import lesson1.obstacles.Wall;
 
 public class Main {
     public static void main(String[] args) {
+
         Competitor[] competitors = {
                 new Human("Иван"),
                 new Cat("Барсик"),
@@ -21,7 +22,7 @@ public class Main {
             };
         Obstacle[] obstacles = {
                 new Cross(1000),
-                new Wall(3)
+                new Wall(1)
         };
 
         for (Competitor c:competitors) {
@@ -30,9 +31,9 @@ public class Main {
                 if(!c.isOnDistance()){
                     break;
                 }
-                
+
             }
-            
+
         }
         for (Competitor c:competitors){
             c.info();
