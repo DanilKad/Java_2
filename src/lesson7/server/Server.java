@@ -4,6 +4,8 @@ package lesson7.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.util.Vector;
 
 public class Server {
@@ -20,53 +22,88 @@ public class Server {
         ServerSocket server = null;
         Socket socket = null;
 
+
         try {
             server = new ServerSocket(8189);
             System.out.println("Сервер запущен");
+            socket.setSoTimeout(5000);
 
-            while (true) {
+            while (true){
                 socket = server.accept();
+                socket.setSoTimeout(5000);
                 System.out.println("Клиент подключился");
-            new ClientHandler(this, socket);
+                new ClientHandler(this,socket);
+            }
+
+        } catch (SocketTimeoutException s) {
+            System.out.println("Socket timed out!");
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
         } catch (IOException e) {
             e.printStackTrace();
+
         } finally {
             try {
                 server.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    public void broadcastMsg(String msg) {
-        for (ClientHandler c : clients) {
-            c.sendMsg(msg);
 
         }
     }
 
-    public void subscribe(ClientHandler clientHandler) {
-        clients.add(clientHandler);
+    public void broadcastMsg(String nick, String msg){
+        for (ClientHandler c:clients ) {
+            c.sendMsg( nick +" : "+  msg);
+        }
     }
 
-    public void unsubscribe(ClientHandler clientHandler) {
-        clients.remove(clientHandler);
-    }
+    public void privateMsg(ClientHandler sender, String receiver, String msg){
+        String message = String.format("[ %s ] private [ %s ] : %s",
+                sender.getNick(), receiver, msg);
 
-        //отослать сообщение в диалоге
-        public void wisperMsg(String from, String to, String msg)
-        {
-
-            for (ClientHandler c: clients) {
-                if(c.getNick().equals(to)) {
-                    c.sendMsg("/w " + from.getNick() + msg);
-                    break;
-                }
+        for (ClientHandler c:clients ) {
+            if(c.getNick().equals(receiver)){
+                c.sendMsg(message);
+                sender.sendMsg(message);
+                return;
             }
-            from.sendMsg("/w to: " + to + msg);
         }
-}
+        sender.sendMsg("Пользователь с ником: "+ receiver +" не найден");
+    }
 
+    public void subscribe(ClientHandler clientHandler){
+        clients.add(clientHandler);
+        broadcastClientlist();
+    }
+
+    public void unsubscribe(ClientHandler clientHandler){
+        clients.remove(clientHandler);
+        broadcastClientlist();
+    }
+
+    public boolean isLoginAuthorized(String login){
+        for (ClientHandler c:clients ) {
+            if (c.getLogin().equals(login)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void broadcastClientlist(){
+        StringBuilder sb = new StringBuilder("/clientlist ");
+        for (ClientHandler c:clients ) {
+            sb.append(c.getNick()+" ");
+        }
+
+        String msg = sb.toString();
+        for (ClientHandler c:clients ) {
+            c.sendMsg(msg);
+        }
+    }
+}
