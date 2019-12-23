@@ -1,4 +1,4 @@
-package lesson1.maraphon.competitior;
+package java2.lesson1.maraphon.competitior;
 
 public class Robot implements Competitor {
     String name;

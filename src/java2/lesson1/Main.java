@@ -1,15 +1,16 @@
-package lesson1;
+package java2.lesson1;
 
-import lesson1.maraphon.competitior.Cat;
-import lesson1.maraphon.competitior.Competitor;
-import lesson1.maraphon.competitior.Human;
-import lesson1.maraphon.competitior.Robot;
-import lesson1.obstacles.Cross;
-import lesson1.obstacles.Obstacle;
-import lesson1.obstacles.Wall;
+import java2.lesson1.maraphon.competitior.Cat;
+import java2.lesson1.maraphon.competitior.Competitor;
+import java2.lesson1.maraphon.competitior.Human;
+import java2.lesson1.maraphon.competitior.Robot;
+import java2.lesson1.obstacles.Cross;
+import java2.lesson1.obstacles.Obstacle;
+import java2.lesson1.obstacles.Wall;
 
 public class Main {
     public static void main(String[] args) {
+
         Competitor[] competitors = {
                 new Human("Иван"),
                 new Cat("Барсик"),
@@ -21,7 +22,7 @@ public class Main {
             };
         Obstacle[] obstacles = {
                 new Cross(1000),
-                new Wall(3)
+                new Wall(1)
         };
 
         for (Competitor c:competitors) {
@@ -30,9 +31,9 @@ public class Main {
                 if(!c.isOnDistance()){
                     break;
                 }
-                
+
             }
-            
+
         }
         for (Competitor c:competitors){
             c.info();
